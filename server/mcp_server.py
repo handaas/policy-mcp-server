@@ -60,7 +60,7 @@ def call_api(product_id: str, params: dict) -> dict:
     url = f'https://console.handaas.com/api/v1/integrator/call_api/{INTEGRATOR_ID}'
     try:
         response = requests.post(url, data=call_params)
-        return response.json().get("data", "查询为空")
+        return response.json().get("data", None) or response.json().get("msgCN", None)
     except Exception as e:
         return "查询失败"
     
@@ -104,7 +104,7 @@ def policy_bigdata_approved_project_stats(matchKeyword: str, keywordType: str = 
 
 
 @mcp.tool()
-def policy_bigdata_fuzzy_search(matchKeyword: str, pageIndex: int = None, pageSize: int = None) -> dict:
+def policy_bigdata_fuzzy_search(matchKeyword: str, pageIndex: int = 1, pageSize: int = None) -> dict:
     """
     该接口的功能是根据提供的产品名称关键词，查询并返回与之相关的企业详细信息，包括企业基本资料及相关营业数据。可以进行综合检索。
 
@@ -204,7 +204,7 @@ def policy_bigdata_policy_info(matchKeyword: str) -> dict:
 
 @mcp.tool()
 def policy_bigdata_policy_search(matchKeyword: str, pnType: str = None, agency: str = None, address: str = None,
-                  policyPubStartTime: str = None, policyPubEndTime: str = None, pageSize: int = None,
+                  policyPubStartTime: str = None, policyPubEndTime: str = None, pageSize: int = 10,
                   pageIndex: int = None) -> dict:
     """
     该接口旨在根据用户提供的关键词、政策类型和地区信息，检索出符合条件的政策法规、申报指南或公示公告，输出包括相关政策的详细信息。此接口在企业或个人需要查找和获取与自身相关的政府政策信息时尤为有用，常见应用场景包括企业申请科技项目或补助资金时，快速定位相关政策指南；公众查询公示公告以获取最新的政府动态；以及咨询公司为客户制作政策合规报告时，提供当前适用的法规政策背景支持。
