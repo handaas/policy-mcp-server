@@ -197,7 +197,6 @@ python server/mcp_server.py streamable-http
 
 **返回值**:
 - `total`: 总数
-- `resultList`: 结果列表
   - `pnId`: 政策id
   - `pnTitle`: 政策标题
   - `pnAgency`: 发布机构
