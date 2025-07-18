@@ -236,6 +236,12 @@ def policy_bigdata_policy_search(matchKeyword: str, pnType: str = None, agency: 
     - pnType: 政策类型 类型：string
     - pnAgency: 发布机构 类型：string
     """
+    if address:
+        try:
+            address = json.loads(address)
+        except:
+            return {"error": "地区格式错误, 请输入list字符串, 例如：[['福建省'],['贵州省','安顺市','平坝县']]"}
+
     # 构建请求参数
     params = {
         'matchKeyword': matchKeyword,
