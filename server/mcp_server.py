@@ -220,7 +220,7 @@ def policy_bigdata_policy_search(matchKeyword: str, pnType: str = None, agency: 
     - matchKeyword: 匹配关键词 类型：string - 政策法规/申报指南/公示公告关键词
     - pnType: 政策类型 类型：select - 政策类型枚举（全部，申报指南，公示公开，其他政策）
     - agency: 发布机构 类型：string
-    - address: 地区 类型：string - 多选，支持省份/城市/区县，输入格式举例：[["福建省"],["贵州省","安顺市","平坝县"]]，查询国家发布政策则输入：[["国家部委"]]
+    - address: 地区 list of list of string - 多选，支持省份/城市/区县，输入格式举例：[["福建省"],["贵州省","安顺市","平坝县"]]，查询国家发布政策则输入：[["国家部委"]]
     - policyPubStartTime: 发布开始日期 类型：string
     - policyPubEndTime: 发布结束日期 类型：string
     - pageSize: 分页大小 类型：int - 一页最多获取50条数据
