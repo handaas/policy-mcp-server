@@ -209,7 +209,7 @@ def policy_bigdata_policy_info(matchKeyword: str) -> dict:
 
 
 @mcp.tool()
-def policy_bigdata_policy_search(matchKeyword: str, pnType: str = None, agency: str = None, address: str = None,
+def policy_bigdata_policy_search(matchKeyword: str, pnType: str = "全部", agency: str = None, address: str = None,
                   policyPubStartTime: str = None, policyPubEndTime: str = None, pageSize: int = 10,
                   pageIndex: int = None) -> dict:
     """
