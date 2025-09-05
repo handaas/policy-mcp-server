@@ -209,8 +209,8 @@ def policy_bigdata_policy_info(matchKeyword: str) -> dict:
 
 
 @mcp.tool()
-def policy_bigdata_policy_search(matchKeyword: str, pnType: str = "全部", agency: str = None, address: str = None,
-                  policyPubStartTime: str = "全部", policyPubEndTime: str = None, pageSize: int = 10,
+def policy_bigdata_policy_search(matchKeyword: str, pnType: str = "全部", agency: str = None, address = None,
+                  policyPubStartTime: str = None, policyPubEndTime: str = None, pageSize: int = 10,
                   pageIndex: int = 1) -> dict:
     """
     该接口旨在根据用户提供的关键词、政策类型和地区信息，检索出符合条件的政策法规、申报指南或公示公告，输出包括相关政策的详细信息。此接口在企业或个人需要查找和获取与自身相关的政府政策信息时尤为有用，常见应用场景包括企业申请科技项目或补助资金时，快速定位相关政策指南；公众查询公示公告以获取最新的政府动态；以及咨询公司为客户制作政策合规报告时，提供当前适用的法规政策背景支持。
@@ -218,11 +218,11 @@ def policy_bigdata_policy_search(matchKeyword: str, pnType: str = "全部", agen
 
     请求参数:
     - matchKeyword: 匹配关键词 类型：string - 政策法规/申报指南/公示公告关键词
-    - pnType: 政策类型 类型：select - 政策类型枚举（全部，申报指南，公示公开，其他政策）
+    - pnType: 政策类型 类型：string - 政策类型枚举（全部，申报指南，公示公开，其他政策）
     - agency: 发布机构 类型：string
-    - address: 地区 类型：string - 多选，支持省份/城市/区县，输入格式举例："["福建省",["贵州省","安顺市","平坝县"]]"，查询国家发布政策则输入："[["国家部委"]]", 四个直辖市为："[["北京"]]"、"[["上海"]]"、"[["天津"]]"、"[["重庆"]]"
-    - policyPubStartTime: 发布开始日期 类型：string
-    - policyPubEndTime: 发布结束日期 类型：string
+    - address: 地区 类型：list of list - 多选，支持省份/城市/区县，输入格式举例：[["福建省"],["贵州省","安顺市","平坝县"]]，查询国家发布政策则输入：[["国家部委"]]，四个直辖市为：[["北京"]]、[["上海"]]、[["天津"]]、[["重庆"]]
+    - policyPubStartTime: 发布开始日期 类型：日期string，输入格式：2025-01-01
+    - policyPubEndTime: 发布结束日期 类型：日期string，输入格式：2025-01-01
     - pageSize: 分页大小 类型：int - 一页最多获取50条数据, 不能超过50, 超过50的统一用50代替
     - pageIndex: 页码 类型：int - 默认从1开始
 
@@ -237,7 +237,13 @@ def policy_bigdata_policy_search(matchKeyword: str, pnType: str = "全部", agen
         - pnType: 政策类型 类型：string
         - pnAgency: 发布机构 类型：string
     """
-
+    if address and isinstance(address, str):
+        try:
+            address = json.loads(address)
+        except:
+            return {"error": "地区格式错误, 请输入list of list格式, 例如：[['福建省'],['贵州省','安顺市','平坝县']]"}
+    if address and isinstance(address, list):
+        address = json.dumps(address, ensure_ascii=False)
     # 构建请求参数
     params = {
         'matchKeyword': matchKeyword,
@@ -278,4 +284,3 @@ if __name__ == "__main__":
     else:
         print("请输入正确的启动方式: stdio 或 sse 或 streamable-http")
         exit(1)
-    
